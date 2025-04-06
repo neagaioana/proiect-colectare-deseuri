@@ -29,7 +29,7 @@ namespace colectare_deseuri.Controllers
             var pubela = await _context.Pubele.FindAsync(model.IdPubela);
             if (pubela == null)
             {
-                pubela = new Pubela { Id = model.IdPubela };
+                pubela = new Pubela { Id = model.IdPubela.ToString() };
                 _context.Pubele.Add(pubela);
                 await _context.SaveChangesAsync();
             }
@@ -58,7 +58,7 @@ namespace colectare_deseuri.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Sterge(int idPubela, int idCetatean)
+        public async Task<IActionResult> Sterge(string idPubela, int idCetatean)
         {
             var legatura = await _context.PubeleCetateni
                 .FirstOrDefaultAsync(p => p.IdPubela == idPubela && p.IdCetatean == idCetatean);
