@@ -84,6 +84,5 @@ namespace colectare_deseuri.Controllers
             return RedirectToAction("Lista", new { cetateanId = idCetatean });
         }
 
-
     }
 }

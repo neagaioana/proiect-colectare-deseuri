@@ -1,4 +1,7 @@
-﻿@model IEnumerable<colectare_deseuri.Models.Colectare>
+@model IEnumerable<colectare_deseuri.Models.Colectare>
+{
+    ViewData["Title"] = "Home Page";
+}
 
 @{
     ViewData["Title"] = "Colectări de Deșeuri";
@@ -6,6 +9,9 @@
 
 <div class="text-center">
     <h1 class="display-4">Colectări de Deșeuri</h1>
+    <div class="mb-3">
+        <a href="/Cetateni/Adauga" class="btn btn-primary">Adaugă Cetatean</a>
+    </div>
 
     <div class="mb-3 text-end">
         <a href="/Cetateni/Adauga" class="btn btn-primary">Adaugă Cetățean</a>

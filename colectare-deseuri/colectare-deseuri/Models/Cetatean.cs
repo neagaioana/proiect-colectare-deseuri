@@ -20,6 +20,7 @@ namespace colectare_deseuri.Models
 
         [Required(ErrorMessage = "Emailul este obligatoriu")]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.(com|ro|net|org)$", ErrorMessage = "Emailul trebuie să fie valid și să conțină domeniu (ex: .com, .ro)")]
+
         public string Email { get; set; }
 
         public ICollection<PubelaCetatean> PubeleCetateni { get; set; } = new List<PubelaCetatean>();
