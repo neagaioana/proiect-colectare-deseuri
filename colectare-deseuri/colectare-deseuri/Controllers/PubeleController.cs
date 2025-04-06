@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace colectare_deseuri.Controllers
 {
-    public class PubeleController : Controller // <-- modificat de la ControllerBase
+    public class PubeleController : Controller 
     {
         private readonly AppDbContext _context;
         public PubeleController(AppDbContext context) => _context = context;
@@ -54,7 +54,7 @@ namespace colectare_deseuri.Controllers
             ViewBag.NumeComplet = cetatean?.Nume + " " + cetatean?.Prenume;
             ViewBag.CetateanId = cetateanId;
 
-            return View("ListaPubele", pubele); // ATENȚIE: numele view-ului
+            return View("ListaPubele", pubele); 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -83,6 +83,7 @@ namespace colectare_deseuri.Controllers
 
             return RedirectToAction("Lista", new { cetateanId = idCetatean });
         }
+
 
     }
 }
