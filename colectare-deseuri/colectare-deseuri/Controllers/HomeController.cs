@@ -18,8 +18,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var dateColectare = await _context.Colectari.ToListAsync(); // Ia toate datele din baza de date
-        return View(dateColectare); // Trimite datele către view
+        var colectari = await _context.Colectari.ToListAsync();
+        return View(colectari);
     }
 
     public IActionResult Privacy()
@@ -32,4 +32,5 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+    
 }

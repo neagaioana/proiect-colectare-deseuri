@@ -1,0 +1,33 @@
+﻿@model List<colectare_deseuri.Models.PubelaCetatean>
+
+<h2>Pubele atribuite cetățeanului: @ViewBag.NumeComplet</h2>
+
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>ID Pubelă</th>
+            <th>Adresă</th>
+            <th style="width: 100px;">Acțiuni</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IdPubela</td>
+                <td>@item.Adresa</td>
+                <td>
+                    <form asp-action="Sterge" asp-controller="Pubele" method="post" onsubmit="return confirm('Ești sigur că vrei să ștergi această pubelă?');" class="d-inline">
+                        <input type="hidden" name="idPubela" value="@item.IdPubela" />
+                        <input type="hidden" name="idCetatean" value="@item.IdCetatean" />
+                        <button type="submit" class="btn btn-sm btn-danger">Șterge</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

@@ -1,0 +1,24 @@
+﻿@model colectare_deseuri.Models.PubelaCetatean
+
+@{
+    ViewData["Title"] = "Atribuire Pubelă";
+    var cetateanId = Context.Request.Query["cetateanId"];
+}
+
+<h2>Atribuire Pubelă</h2>
+
+<form asp-controller="Pubele" asp-action="AtribuiePubela" method="post">
+    <input type="hidden" name="IdCetatean" value="@cetateanId" />
+
+    <div class="form-group">
+        <label for="IdPubela">ID Pubelă</label>
+        <input type="number" class="form-control" name="IdPubela" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Adresa">Adresa</label>
+        <input type="text" class="form-control" name="Adresa" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Salvează</button>
+</form>

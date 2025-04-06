@@ -1,0 +1,41 @@
+﻿@model colectare_deseuri.Models.Cetatean
+
+@{
+    ViewData["Title"] = "Adaugă Cetățean";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Adauga" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Nume" class="form-label"></label>
+        <input asp-for="Nume" class="form-control" />
+        <span asp-validation-for="Nume" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Prenume" class="form-label"></label>
+        <input asp-for="Prenume" class="form-control" />
+        <span asp-validation-for="Prenume" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CNP" class="form-label"></label>
+        <input asp-for="CNP" class="form-control" />
+        <span asp-validation-for="CNP" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvează</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

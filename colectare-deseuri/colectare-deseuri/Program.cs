@@ -1,4 +1,4 @@
-using colectare_deseuri.Data;
+﻿using colectare_deseuri.Data;
 using Microsoft.EntityFrameworkCore;
 
 public class Program

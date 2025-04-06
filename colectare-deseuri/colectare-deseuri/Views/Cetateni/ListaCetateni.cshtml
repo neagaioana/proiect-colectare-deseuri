@@ -1,0 +1,53 @@
+﻿@model IEnumerable<colectare_deseuri.Models.Cetatean>
+@{
+    ViewData["Title"] = "Listă Cetățeni";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<a href="/Cetateni/Adauga" class="btn btn-primary mb-3">Adaugă cetățean</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>CNP</th>
+            <th>Email</th>
+            <th>Adaugă Pubelă</th>
+            <th>Vezi Pubele</th>
+            <th>Șterge</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Nume</td>
+                <td>@c.Prenume</td>
+                <td>@c.CNP</td>
+                <td>@c.Email</td>
+                <td>
+                    <a class="btn btn-success" href="/Pubele/Atribuire?cetateanId=@c.Id">Adaugă Pubelă</a>
+
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-controller="Pubele" asp-action="Lista" asp-route-cetateanId="@c.Id">Vezi Pubele</a>
+
+                </td>
+                <td>
+                    <form asp-action="Sterge" asp-controller="Cetateni" asp-route-id="@c.Id" method="post" onsubmit="return confirm('Ești sigur(ă) că vrei să ștergi acest cetățean?');">
+                        <button type="submit" class="btn btn-danger">Șterge</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
