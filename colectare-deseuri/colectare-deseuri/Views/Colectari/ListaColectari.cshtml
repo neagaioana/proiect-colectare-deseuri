@@ -1,0 +1,46 @@
+﻿@model IEnumerable<colectare_deseuri.Models.Colectare>
+
+@{
+    ViewData["Title"] = "Colectări de Deșeuri";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Colectări de Deșeuri</h1>
+
+    <div class="mb-3 text-end">
+        <a href="/Cetateni/Adauga" class="btn btn-primary">Adaugă Cetățean</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Nu există colectări înregistrate momentan.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>ID Pubelă</th>
+                    <th>Adresă</th>
+                    <th>Data Colectării</th>
+                    <th>Coordonate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.IdPubela</td>
+                        <td>@item.Adresa</td>
+                        <td>@item.TimpRidicare</td>
+                        <td>
+                            <small>@item.Latitude, @item.Longitude</small>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

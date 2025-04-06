@@ -10,7 +10,7 @@ namespace colectare_deseuri.Models
         [ForeignKey("IdPubela")]
         public Pubela Pubela { get; set; }
 
-        public DateTime TimpRidicare { get; set; }
+        public string TimpRidicare { get; set; }
         public required string Adresa { get; set; }
 
         public required float Longitude { get; set; }

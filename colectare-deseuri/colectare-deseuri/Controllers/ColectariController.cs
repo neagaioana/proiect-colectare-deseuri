@@ -5,34 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace colectare_deseuri.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ColectareController : ControllerBase
+    public class ColectariController : Controller
     {
         private readonly AppDbContext _context;
 
-        public ColectareController(AppDbContext context)
+        public ColectariController(AppDbContext context)
         {
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Colectare colectare)
+        public async Task<IActionResult> ListaColectari()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            _context.Colectari.Add(colectare);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Colectare adăugată cu succes!" });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var date = await _context.Colectari.ToListAsync();
-            return Ok(date);
+            var colectari = await _context.Colectari.ToListAsync();
+            return View(colectari);
         }
     }
 }

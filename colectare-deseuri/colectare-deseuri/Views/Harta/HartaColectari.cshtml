@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Harta Colectări";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<h2>Colectări din 15.10.2024</h2>
+
+<div id="map" style="height: 600px;"></div>
+
+<script>
+    var map = L.map('map').setView([45.79, 24.15], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
+
+    var colectari = @Html.Raw(Json.Serialize(ViewBag.Colectari));
+
+    console.log("Colectări:", colectari); // verificare în consolă
+
+    colectari.forEach(function(punct) {
+        L.marker([punct.latitude, punct.longitude])
+            .addTo(map)
+            .bindPopup("<b>Adresă:</b> " + punct.adresa + "<br><b>Ridicare:</b> " + punct.timpRidicare);
+    });
+</script>
