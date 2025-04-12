@@ -13,6 +13,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddSession();
 
         var app = builder.Build();
 
@@ -26,13 +27,14 @@ public class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseSession();
         app.UseAuthorization();
 
         app.MapStaticAssets();
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}")
+            pattern: "{controller=Account}/{action=Login}/{id?}")
             .WithStaticAssets();
 
         app.Run();

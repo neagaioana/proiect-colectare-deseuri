@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace colectare_deseuri.Controllers
-{
+{    
     public class CetateniController : Controller
     {
         private readonly AppDbContext _context;
