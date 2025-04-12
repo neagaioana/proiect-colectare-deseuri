@@ -1,5 +1,7 @@
-﻿@{
+﻿@using colectare_deseuri.Models
+@{
     ViewData["Title"] = "Harta Colectări";
+    var colectari = (List<Colectare>)ViewBag.Colectari;
 }
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -8,7 +10,6 @@
 <h2>Colectări din 15.10.2024</h2>
 
 <div id="map" style="height: 600px;"></div>
-
 <script>
     var map = L.map('map').setView([45.79, 24.15], 13);
 
@@ -16,13 +17,44 @@
         maxZoom: 19
     }).addTo(map);
 
-    var colectari = @Html.Raw(Json.Serialize(ViewBag.Colectari));
+    var colectari = @Html.Raw(Json.Serialize(colectari));
 
-    console.log("Colectări:", colectari); // verificare în consolă
+    // icon verde pentru start (garaj)
+    var iconStart = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
+
+    // icon roșu pentru stop (groapa de gunoi)
+    var iconStop = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
+
+    // marker standard (albastru)
+    var iconBlue = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
 
     colectari.forEach(function(punct) {
-        L.marker([punct.latitude, punct.longitude])
-            .addTo(map)
-            .bindPopup("<b>Adresă:</b> " + punct.adresa + "<br><b>Ridicare:</b> " + punct.timpRidicare);
+        let marker;
+
+        if (punct.timpRidicare === "Start") {
+            marker = L.marker([punct.latitude, punct.longitude], { icon: iconStart });
+        } else if (punct.timpRidicare === "Final") {
+            marker = L.marker([punct.latitude, punct.longitude], { icon: iconStop });
+        } else {
+            marker = L.marker([punct.latitude, punct.longitude], { icon: iconBlue });
+        }
+
+        marker.addTo(map).bindPopup("<b>Adresă:</b> " + punct.adresa + "<br><b>Ridicare:</b> " + punct.timpRidicare);
     });
 </script>
+

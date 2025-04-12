@@ -1,0 +1,51 @@
+﻿@model colectare_deseuri.Models.Admin
+@{
+    ViewData["Title"] = "Autentificare";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <h2 class="text-center mb-4">Autentificare admin</h2>
+
+        <form method="post" asp-controller="Account" asp-action="Login">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="Username" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="parola" class="form-label">Parola</label>
+                <input type="password" class="form-control" name="Parola" required />
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100">Autentificare</button>
+
+            @if (ViewBag.Eroare != null)
+            {
+                <div class="alert alert-danger mt-3">@ViewBag.Eroare</div>
+            }
+        </form>
+    </div>
+</div>
