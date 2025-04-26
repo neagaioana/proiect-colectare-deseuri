@@ -14,7 +14,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddSession();
-
+        builder.Services.AddHttpClient();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -29,7 +29,6 @@ public class Program
         app.UseRouting();
         app.UseSession();
         app.UseAuthorization();
-
         app.MapStaticAssets();
 
         app.MapControllerRoute(
