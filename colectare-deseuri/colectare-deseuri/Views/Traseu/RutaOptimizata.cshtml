@@ -1,0 +1,107 @@
+﻿@model (List<colectare_deseuri.Models.Colectare> Original, List<colectare_deseuri.Models.Colectare> Optimizata)
+@{
+    ViewData["Title"] = "Ruta Optimizată";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<h2>🚛 Ruta optimizată pentru 15.10.2024</h2>
+
+<div class="bg-light p-3 rounded shadow-sm mb-4">
+    <h4>📊 Detalii despre optimizare</h4>
+    <ul>
+        <li><strong>Total puncte colectare:</strong> @ViewData["TotalPuncte"]</li>
+        <li><strong>Distanță traseu inițial (km):</strong> @ViewData["DistantaInitiala"] km</li>
+        <li><strong>Distanță traseu optimizat (ORS):</strong> <span id="dist-opt">calculând...</span></li>
+        <li><strong>Diferență:</strong> <span id="dist-diff">-</span></li>
+        <li><strong>Timp estimat traseu:</strong> <span id="timp-ors">-</span></li>
+    </ul>
+</div>
+
+<div id="map" style="height: 600px;" class="mb-5"></div>
+
+<script>
+    const map = L.map('map').setView([45.79, 24.15], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+    const rutaOptimizata = @Html.Raw(Json.Serialize(Model.Optimizata));
+
+    const iconStart = L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
+    const iconStop = L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] });
+    const iconBlue = L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png', iconSize: [25, 41], iconAnchor: [12, 41] });
+
+    const coords = [];
+
+    rutaOptimizata.forEach((p, i) => {
+        let lat = parseFloat(p.latitude || p.Latitude);
+        let lng = parseFloat(p.longitude || p.Longitude);
+        if (lat > 90) [lat, lng] = [lng, lat];
+        coords.push([lng, lat]);
+
+     const icon = i === 0 ? iconStart : (i === rutaOptimizata.length - 1 ? iconStop : iconBlue);
+
+        L.marker([lat, lng], { icon: icon }).addTo(map)
+            .bindPopup(`Punct ${i + 1}<br>${p.adresa || p.Adresa}`);
+    });
+
+        const puncteLatLng = rutaOptimizata.map(p => [parseFloat(p.longitude || p.Longitude), parseFloat(p.latitude || p.Latitude)]);
+        afiseazaRutaPeStrazi(puncteLatLng);
+
+
+        async function afiseazaRutaPeStrazi(coords) {
+        let totalDist = 0;
+        let totalTime = 0;
+
+        for (let i = 0; i < coords.length - 1; i++) {
+            const segment = [coords[i], coords[i + 1]];
+
+            console.warn(`Coordonate segment ${i}:`, segment);
+
+
+            try {
+                const response = await fetch("/api/ors/segment", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(segment)
+                });
+
+                if (!response.ok) {
+                    console.warn(`Segment ${i}: ${response.statusText}`);
+                    continue;
+                }
+
+                const data = await response.json();
+                    if (!data || !data.features || !data.features[0]) {
+        console.warn(`Segment ${i}: date invalide`, data);
+        continue;
+
+    }
+    const feature = data.features[0];
+
+
+                L.geoJSON(data, { style: { color: "green" } }).addTo(map);
+
+                totalDist += feature.properties.summary.distance;
+                totalTime += feature.properties.summary.duration;
+            } catch (err) {
+                console.error(`Segment ${i}:`, err);
+            }
+
+                    await new Promise(resolve => setTimeout(resolve, 4200)); // 4.2 sec între cereri
+        }
+
+        const distKm = (totalDist / 1000).toFixed(2);
+        const timpMin = Math.round(totalTime / 60 + coords.length);
+
+        document.getElementById("dist-opt").innerText = distKm + " km";
+        document.getElementById("timp-ors").innerText = timpMin + " minute";
+
+        const dInit = parseFloat("@ViewData["DistantaInitiala"]");
+        if (!isNaN(dInit)) {
+            document.getElementById("dist-diff").innerText = (dInit - distKm).toFixed(2) + " km";
+        }
+    }
+
+
+</script>
